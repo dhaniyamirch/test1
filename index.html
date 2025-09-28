@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sand Grain Analysis System</title>
+    <style>
+        /* ... (Your original CSS is here - no change needed) ... */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            scroll-behavior: smooth;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #667eea;
+        }
+
+        /* Sections */
+        section {
+            min-height: 100vh;
+            padding: 5rem 2rem;
+            max-width: 1530px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            margin: 0;
+            max-width: 100%;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.3s forwards;
+        }
+
+
+        .main-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.6s forwards;
+            margin-bottom: 3rem;
+        }
+
+        .gallery-preview {
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.9s forwards;
+        }
+
+        .gallery-preview h3 {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: white;
+            color: #667eea;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: #667eea;
+        }
+
+        /* Content Sections */
+        .content-section {
+            padding: 4rem 2rem;
+        }
+
+        .content-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: #333;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 1rem;
+            color: #667eea;
+        }
+
+        /* Map Section */
+        .map-section {
+            background: #f8f9fa;
+        }
+
+        #map {
+            align-items: center;
+            width: 100%;
+            height: 400px;
+            border-radius: 15px;
+            margin: 2rem 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Gallery Section */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .gallery-item {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            border: 2px dashed #ddd;
+            transition: all 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            border-color: #667eea;
+            background: rgba(255, 255, 255, 1);
+        }
+
+        /* Analysis Grid */
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .analysis-item {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+        }
+
+        .analysis-image {
+            flex: 0 0 150px;
+        }
+
+        .analysis-image img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .analysis-data {
+            flex: 1;
+        }
+
+        .analysis-data h4 {
+            margin: 0 0 1rem 0;
+            color: #333;
+            font-size: 1.1rem;
+        }
+
+        .data-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            padding: 0.25rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .data-label {
+            font-weight: 600;
+            color: #555;
+        }
+
+        .data-value {
+            color: #333;
+        }
+
+        .analysis-placeholder {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 3rem;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border: 2px dashed #ddd;
+        }
+
+        /* Analysis Section */
+        .analysis-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            display: block;
+        }
+
+        /* About Section */
+        .about-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+
+        .team-info {
+            text-align: center;
+            max-width: 800px;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 2rem;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        .close-btn {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-btn:hover {
+            color: #000;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .main-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .analysis-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .analysis-item {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .analysis-image {
+                flex: none;
+                width: 100%;
+            }
+
+            .features-grid,
+            .analysis-stats {
+                grid-template-columns: 1fr;
+            }
+
+            section {
+                padding: 3rem 1rem;
+            }
+        }
+
+        /* Horizontal Image Scroller */
+        .sample-images-container {
+            margin: 2rem 0;
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid #e9ecef;
+        }
+
+        .sample-images-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .horizontal-scroller {
+            display: flex;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            gap: 1rem;
+            padding: 1rem 0;
+            scrollbar-width: thin;
+            scrollbar-color: #667eea #f1f1f1;
+        }
+
+        .horizontal-scroller::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .horizontal-scroller::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .horizontal-scroller::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 10px;
+        }
+
+        .horizontal-scroller::-webkit-scrollbar-thumb:hover {
+            background: #5a6fd8;
+        }
+
+        .sample-image-item {
+            flex: 0 0 auto;
+            width: 200px;
+            height: 200px;
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background: #fff;
+            border: 2px solid #e9ecef;
+        }
+
+        .sample-image-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .sample-image-item img {
+            width: 100%;
+            height: 70%;
+            object-fit: cover;
+        }
+
+        .sample-image-info {
+            padding: 0.5rem;
+            text-align: center;
+            height: 30%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .sample-image-info h4 {
+            font-size: 0.9rem;
+            color: #333;
+            margin-bottom: 0.2rem;
+        }
+
+        .sample-image-info p {
+            font-size: 0.8rem;
+            color: #666;
+        }
+        /* --- CSS for Fixed Video on Scroll --- */
+
+#fixedVideoContainer {
+    max-width: 800px;
+    width: 100%;
+    margin: 2rem auto;
+    position: relative;
+    padding-bottom: 30.25%; 
+    height: 0;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+#fixedVideoContainer video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+/* Ensure this is in your CSS for the layout */
+/* --- Team Grid and Base Member Styles (Ensure these are present/updated) --- */
+/* --- SIMPLIFIED TEAM CSS --- */
+
+.team-grid {
+    display: grid;
+    /* Arranges members into a compact, responsive grid (e.g., 4 or 5 per row) */
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); 
+    gap: 1.5rem;
+    margin-top: 1rem;
+    padding-top: 0.5rem;
+}
+
+.team-member {
+    text-align: center;
+    padding: 1rem;
+    border-radius: 10px; 
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Lighter shadow */
+    transition: all 0.3s ease;
+    background: #fdfdfd; 
+    border: 1px solid #eee; /* Very subtle border */
+}
+
+.team-member:hover {
+    transform: translateY(-3px); /* Less aggressive hover */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.member-avatar {
+    font-size: 2.5rem; /* Slightly smaller and cleaner */
+    margin-bottom: 0.25rem;
+}
+
+.team-member h4 {
+    margin: 0 0 0.25rem 0;
+    font-size: 1rem;
+    color: #333;
+    font-weight: 600;
+}
+
+.member-role {
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+/* --- Role Specifics (Simple color accents) --- */
+
+/* Mentors (role-mentor) */
+.role-mentor {
+    border-bottom: 3px solid #764ba2; /* Accent color on bottom */
+    background: #f7f7ff;
+}
+
+.role-mentor .member-role {
+    color: #764ba2;
+}
+
+/* Developers (role-dev) */
+.role-dev {
+    border-bottom: 3px solid #667eea; /* Accent color on bottom */
+}
+
+.role-dev .member-role {
+    color: #667eea;
+}
+/* Mentor grid (only 2 columns, centered) */
+/* Mentor grid (only 2 columns, centered) */
+.team-grid-mentors {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 220px));
+    justify-content: center;
+    gap: 1.5rem;
+    margin: 1rem 0 2rem 0; /* 👈 adds bottom margin */
+}
+
+
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="logo">🏖️ Sand Analysis</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#map">Map</a></li>
+                <li><a href="#analysis">Validation & Analysis</a></li>
+                <li><a href="#about">About Us</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section id="home" class="hero">
+        <h1>🏖️ Sand Grain Analysis System</h1>
+        <p>Advanced camera-based geological analysis for sand grain measurement and mapping</p>
+        
+        <div class="main-buttons">
+            <button class="btn btn-primary" onclick="captureImage()">
+                📷 Capture Image
+            </button>
+            <button class="btn btn-secondary" onclick="uploadImage()">
+                ⬆️ Upload Image
+            </button>
+            <button class="btn btn-primary" onclick="openGallery()">
+                🎨 Gallery
+            </button>
+        </div>
+
+        <div class="gallery-preview" id="galleryPreview">
+            <h3 style="margin-bottom: 1rem; color: white;">Recent Captures</h3>
+            <div class="gallery-grid" id="imageGallery">
+                <div class="gallery-item">
+                    <div style="font-size: 2rem; margin-bottom: 1rem; color: #667eea;">📷</div>
+                    <p style="color: #333;">Your captured images will appear here</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="map" class="content-section map-section">
+        
+    </section>
+
+    <section id="analysis" class="content-section">
+        <div style="text-align: center; margin-bottom: 3rem;">
+            <button class="btn btn-primary" onclick="showAnalysisInfo()" style="margin: 0.5rem;">🔬 Analyze All</button>
+        </div>
+
+        <div class="analysis-item">
+    <div class="analysis-image">
+        <img src="data:image/svg+xml;base64,..." alt="Sample_1759072498753.jpg"> 
+    </div>
+    
+    <div class="analysis-data">
+        <h4>Sample_1759072498753.jpg</h4>
+        
+        <div class="data-row">
+            <span class="data-label">Location:</span> 
+            <span class="data-value">18.5277, 73.8571</span>
+        </div>
+        
+        <div class="data-row">
+            <span class="data-label">Grain Size:</span> 
+            <span class="data-value">Fine (0.1-0.25mm)</span>
+        </div>
+        
+        <div class="data-row">
+            <span class="data-label">Average Size:</span> 
+            <span class="data-value">1.67mm</span>
+        </div>
+        
+        <div class="data-row">
+            <span class="data-label">Sorting:</span> 
+            <span class="data-value">Poorly sorted</span>
+        </div>
+        
+        <div class="data-row">
+            <span class="data-label">Roundness:</span> 
+            <span class="data-value">Sub-angular</span>
+        </div>
+        
+        <div class="data-row">
+            <span class="data-label">Grain Count:</span> 
+            <span class="data-value">517</span>
+        </div>
+        
+        <div class="data-row">
+            <span class="data-label">Dominant Mineral:</span> 
+            <span class="data-value">Quartz</span>
+        </div>
+    </div>
+</div>
+        <h2>🔬 Validation & Analysis</h2>
+        <p style="text-align: center; font-size: 1.1rem; margin-bottom: 3rem;">Images and their respective analyzed data</p>
+       <div id="fixedVideoContainer" class="responsive-video-wrapper">
+            <video 
+                id="scrollVideo" 
+                controls 
+                poster="path/to/video-thumbnail.jpg"
+                autoplay 
+                muted
+            >
+                <source src="temp.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+
+</div>
+        <div class="sample-images-container">
+            <h3 class="sample-images-title">📸 Sample Images</h3>
+            <div class="horizontal-scroller" id="sampleImagesScroller">
+                <div class="sample-image-item" onclick="captureImage('beach_sand_1')">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjE0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iYmVhY2hHcmFkaWVudCIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgICAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNmZGRiNzIiLz4KICAgICAgICAgICAgPHN0b3Agb2Zmc2V0PSI1MCUiIHN0b3AtY29sb3I9IiNmNGNmNWEiLz4KICAgICAgICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjZWRiNzQzIi8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMTQwIiBmaWxsPSJ1cmwoI2JlYWNoR3JhZGllbnQpIi8+CiAgICA8Y2lyY2xlIGN4PSI0MCIgY3k9IjMwIiByPSIzIiBmaWxsPSIjZGRjOTNmIiBvcGFjaXR5PSIwLjgiLz4KICAgIDxjaXJjbGUgY3g9IjgwIiBjeT0iNjAiIHI9IjQiIGZpbGw9IiNkZGM5M2YiIG9wYWNpdHk9IjAuNyIvPgogICAgPGNpcmNsZSBjeD0iMTIwIiBjeT0iNDAiIHI9IjIuNSIgZmlsbD0iI2VkYjc0MyIgb3BhY2l0eT0iMC45Ii8+CiAgICA8Y2lyY2xlIGN4PSIxNjAiIGN5PSI4MCIgcj0iMyIgZmlsbD0iI2Y0Y2Y1YSIgb3BhY2l0eT0iMC44Ii8+CiAgICA8Y2lyY2xlIGN4PSI2MCIgY3k9IjEwMCIgcj0iNCIgZmlsbD0iI2RkYzkzZiIgb3BhY2l0eT0iMC43Ii8+CiAgICA8Y2lyY2xlIGN4PSIxNDAiIGN5PSIxMTAiIHI9IjMuNSIgZmlsbD0iI2VkYjc0MyIgb3BhY2l0eT0iMC44Ii8+CiAgICA8dGV4dCB4PSIxMDAiIHk9IjEzMCIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyIiBmaWxsPSIjOTE3MjNhIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5CZWFjaCBTYW5kPC90ZXh0Pgo8L3N2Zz4=" alt="Beach Sand Sample">
+                    <div class="sample-image-info">
+                        <h4>Beach Sand #1</h4>
+                        <p>Fine grain, 0.2-0.5mm</p>
+                    </div>
+                </div>
+                
+                <div class="sample-image-item" onclick="captureImage('beach_sand_2')">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjE0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iY29hcnNlR3JhZGllbnQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZjdhOTUwIi8+CiAgICAgICAgICAgIDxzdG9wIG9mZnNldD0iNTAlIiBzdG9wLWNvbG9yPSIjZWQ5NzQwIi8+CiAgICAgICAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2Q5ODMzNSIvPgogICAgICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjE0MCIgZmlsbD0idXJsKCNjb2Fyc2VHcmFkaWVudCkiLz4KICAgIDxjaXJjbGUgY3g9IjMwIiBjeT0iMzAiIHI9IjUiIGZpbGw9IiNjNzZmMzAiIG9wYWNpdHk9IjAuOCIvPgogICAgPGNpcmNsZSBjeD0iNzAiIGN5PSI1MCIgcj0iNi41IiBmaWxsPSIjZTk4OTQzIiBvcGFjaXR5PSIwLjciLz4KICAgIDxjaXJjbGUgY3g9IjEzMCIgY3k9IjQwIiByPSI1LjUiIGZpbGw9IiNkOTgzMzUiIG9wYWNpdHk9IjAuOSIvPgogICAgPGNpcmNsZSBjeD0iMTcwIiBjeT0iNzAiIHI9IjciIGZpbGw9IiNjNzZmMzAiIG9wYWNpdHk9IjAuOCIvPgogICAgPGNpcmNsZSBjeD0iNTAiIGN5PSI5MCIgcj0iNiIgZmlsbD0iI2VkOTc0MCIgb3BhY2l0eT0iMC43Ii8+CiAgICA8Y2lyY2xlIGN4PSIxNTAiIGN5PSIxMDAiIHI9IjgiIGZpbGw9IiNkOTgzMzUiIG9wYWNpdHk9IjAuOCIvPgogICAgPHRleHQgeD0iMTAwIiB5PSIxMzAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzkxNzIzYSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Q29hcnNlIFNhbmQ8L3RleHQ+Cjwvc3ZnPg==" alt="Coarse Sand Sample">
+                    <div class="sample-image-info">
+                        <h4>Beach Sand #2</h4>
+                        <p>Coarse grain, 0.5-1.0mm</p>
+                    </div>
+                </div>
+                
+                <div class="sample-image-item" onclick="captureImage('river_sand_1')">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjE0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0icml2ZXJHcmFkaWVudCIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgICAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNiNWE2OGIiLz4KICAgICAgICAgICAgPHN0b3Agb2Zmc2V0PSI1MCUiIHN0b3AtY29sb3I9IiNhNTk3N2QiLz4KICAgICAgICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjOTE4NDZjIi8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMTQwIiBmaWxsPSJ1cmwoI3JpdmVyR3JhZGllbnQpIi8+CiAgICA8Y2lyY2xlIGN4PSI0NSIgY3k9IjM1IiByPSIyLjUiIGZpbGw9IiM3NzZlNTYiIG9wYWNpdHk9IjAuOCIvPgogICAgPGNpcmNsZSBjeD0iOTAiIGN5PSI1NSIgcj0iMyIgZmlsbD0iIzg0Nzc2MyIgb3BhY2l0eT0iMC43Ii8+CiAgICA8Y2lyY2xlIGN4PSIxMzUiIGN5PSI0NSIgcj0iMi44IiBmaWxsPSIjOTE4NDZjIiBvcGFjaXR5PSIwLjkiLz4KICAgIDxjaXJjbGUgY3g9IjE2NSIgY3k9Ijc1IiByPSIzLjIiIGZpbGw9Ijc3NmU1NiIgb3BhY2l0eT0iMC44Ii8+CiAgICA8Y2lyY2xlIGN4PSI2NSIgY3k9Ijk1IiByPSIzLjUiIGZpbGw9IiNhNTk3N2QiIG9wYWNpdHk9IjAuNyIvPgogICAgPGNpcmNsZSBjeD0iMTQ1IiBjeT0iMTA1IiByPSIzIiBmaWxsPSIjOTE4NDZjIiBvcGFjaXR5PSIwLjgiLz4KICAgIDx0ZXh0IHg9IjEwMCIgeT0iMTMwIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM2NTUyMzciIHRleHQtYW5jaG9yPSJtaWRkbGUiPlJpdmVyIFNhbmQ8L3RleHQ+Cjwvc3ZnPg==" alt="River Sand Sample">
+                    <div class="sample-image-info">
+                        <h4>River Sand #1</h4>
+                        <p>Medium grain, 0.3-0.7mm</p>
+                    </div>
+                </div>
+                
+                <div class="sample-image-item" onclick="captureImage('river_sand_1')">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjE0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0icml2ZXJHcmFkaWVudCIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgICAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNiNWE2OGIiLz4KICAgICAgICAgICAgPHN0b3Agb2Zmc2V0PSI1MCUiIHN0b3AtY29sb3I9IiNhNTk3N2QiLz4KICAgICAgICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjOTE4NDZjIi8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMTQwIiBmaWxsPSJ1cmwoI3JpdmVyR3JhZGllbnQpIi8+CiAgICA8Y2lyY2xlIGN4PSI0NSIgY3k9IjM1IiByPSIyLjUiIGZpbGw9IiM3NzZlNTYiIG9wYWNpdHk9IjAuOCIvPgogICAgPGNpcmNsZSBjeD0iOTAiIGN5PSI1NSIgcj0iMyIgZmlsbD0iIzg0Nzc2MyIgb3BhY2l0eT0iMC43Ii8+CiAgICA8Y2lyY2xlIGN4PSIxMzUiIGN5PSI0NSIgcj0iMi44IiBmaWxsPSIjOTE4NDZjIiBvcGFjaXR5PSIwLjkiLz4KICAgIDxjaXJjbGUgY3g9IjE2NSIgY3k9Ijc1IiByPSIzLjIiIGZpbGw9Ijc3NmU1NiIgb3BhY2l0eT0iMC44Ii8+CiAgICA8Y2lyY2xlIGN4PSI2NSIgY3k9Ijk1IiByPSIzLjUiIGZpbGw9IiNhNTk3N2QiIG9wYWNpdHk9IjAuNyIvPgogICAgPGNpcmNsZSBjeD0iMTQ1IiBjeT0iMTA1IiByPSIzIiBmaWxsPSIjOTE4NDZjIiBvcGFjaXR5PSIwLjgiLz4KICAgIDx0ZXh0IHg9IjEwMCIgeT0iMTMwIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM2NTUyMzciIHRleHQtYW5jaG9yPSJtaWRkbGUiPlJpdmVyIFNhbmQ8L3RleHQ+Cjwvc3ZnPg==" alt="River Sand Sample">
+                    <div class="sample-image-info">
+                        <h4>Desert Sand #1</h4>
+                        <p>Very fine, 0.1-0.3mm</p>
+                    </div>
+                </div>
+                
+                <div class="sample-image-item" onclick="captureImage('volcanic_sand_1')">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjE0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0idm9sY2FuaWNHcmFkaWVudCIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgICAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM0YTRhNGEiLz4KICAgICAgICAgICAgPHN0b3Agb2Zmc2V0PSI1MCUiIHN0b3AtY29sb3I9IiMzNTM1MzUiLz4KICAgICAgICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMmEyYTJhIi8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMTQwIiBmaWxsPSJ1cmwoI3ZvbGNhbmljR3JhZGllbnQpIi8+CiAgICA8Y2lyY2xlIGN4PSI0NSIgY3k9IjM1IiByPSI0IiBmaWxsPSIjNjY2NjY2IiBvcGFjaXR5PSIwLjgiLz4KICAgIDxjaXJjbGUgY3g9IjkwIiBjeT0iNjAiIHI9IjMuNSIgZmlsbD0iIzU1NTU1NSIgb3BhY2l0eT0iMC43Ii8+CiAgICA8Y2lyY2xlIGN4PSIxMzUiIGN5PSI0NSIgcj0iNCIgZmlsbD0iIzQwNDA0MCIgb3BhY2l0eT0iMC45Ii8+CiAgICA8Y2lyY2xlIGN4PSIxNjUiIGN5PSI4MCIgcj0iMy44IiBmaWxsPSIjNjY2NjY2IiBvcGFjaXR5PSIwLjgiLz4KICAgIDxjaXJjbGUgY3g9IjcwIiBjeT0iMTAwIiByPSI0LjIiIGZpbGw9IiM1NTU1NTUiIG9wYWNpdHk9IjAuNyIvPgogICAgPGNpcmNsZSBjeD0iMTQ1IiBjeT0iMTEwIiByPSIzLjciIGZpbGw9IiM0MDQwNDAiIG9wYWNpdHk9IjAuOCIvPgogICAgPHRleHQgeD0iMTAwIiB5PSIxMzAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiIgZmlsbD0iI2ZmZmZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Vm9sY2FuaWMgU2FuZDwvdGV4dD4KPC9zdmc+" alt="Volcanic Sand Sample">
+                    <div class="sample-image-info">
+                        <h4>Volcanic Sand #1</h4>
+                        <p>Mixed grain, 0.2-0.8mm</p>
+                    </div>
+                </div>
+                
+                <div class="sample-image-item" onclick="captureImage('construction_sand_1')">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjE0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxkZWZzPgogICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iY29uc3RydWN0aW9uR3JhZGllbnQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjY2NjY2NjIi8+CiAgICAgICAgICAgIDxzdG9wIG9mZnNldD0iNTAlIiBzdG9wLWNvbG9yPSIjYmJiYmJiIi8+CiAgICAgICAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2FhYWFhYSIvPgogICAgICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjE0MCIgZmlsbD0idXJsKCNjb25zdHJ1Y3Rpb25HcmFkaWVudCkiLz4KICAgIDxjaXJjbGUgY3g9IjQwIiBjeT0iMzAiIHI9IjUuNSIgZmlsbD0iIzk5OTk5OSIgb3BhY2l0eT0iMC44Ii8+CiAgICA8Y2lyY2xlIGN4PSI4NSIgY3k9IjYwIiByPSI2IiBmaWxsPSIjYjNiM2IzIiBvcGFjaXR5PSIwLjciLz4KICAgIDxjaXJjbGUgY3g9IjEzMCIgY3k9IjQwIiByPSI1LjgiIGZpbGw9IiNhYWFhYWEiIG9wYWNpdHk9IjAuOSIvPgogICAgPGNpcmNsZSBjeD0iMTY1IiBjeT0iNzUiIHI9IjYuNSIgZmlsbD0iIzk5OTk5OSIgb3BhY2l0eT0iMC44Ii8+CiAgICA8Y2lyY2xlIGN4PSI2NSIgY3k9IjEwMCIgcj0iNyIgZmlsbD0iI2JiYmJiYiIgb3BhY2l0eT0iMC43Ii8+CiAgICA8Y2lyY2xlIGN4PSIxNTAiIGN5PSIxMTAiIHI9IjYuMyIgZmlsbD0iI2FhYWFhYSIgb3BhY2l0eT0iMC44Ii8+CiAgICA8dGV4dCB4PSIxMDAiIHk9IjEzMCIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyIiBmaWxsPSIjNDQ0NDQ0IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Db25zdHJ1Y3Rpb24gU2FuZDwvdGV4dD4KPC9zdmc+" alt="Construction Sand Sample">
+                    <div class="sample-image-info">
+                        <h4>Construction Sand</h4>
+                        <p>Large grain, 0.8-2.0mm</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </section>
+
+    <div class="card" >
+    <h3 style="text-align: center; font-size: 2rem; margin-bottom: 3rem;"> The Project Team</h3>
+
+    <!-- Mentors -->
+    <div class="team-grid-mentors">
+        <div class="team-member role-mentor">
+            <div class="member-avatar">👨‍🏫</div>
+            <h4>Mentor 1 Name</h4>
+            <p class="member-role">Technical Advisor</p>
+        </div>
+        <div class="team-member role-mentor">
+            <div class="member-avatar">👩‍💼</div>
+            <h4>Mentor 2 Name</h4>
+            <p class="member-role">Project Consultant</p>
+        </div>
+    </div>   
+
+    <!-- Team Members -->
+    <div class="team-grid"> 
+        <div class="team-member role-dev">
+            <div class="member-avatar">👨‍💻</div>
+            <h4>Dev Member 1</h4>
+            <p class="member-role">Lead Developer</p>
+        </div>
+        <div class="team-member role-dev">
+            <div class="member-avatar">👩‍💻</div>
+            <h4>Dev Member 2</h4>
+            <p class="member-role">Frontend Specialist</p>
+        </div>
+        <div class="team-member role-dev">
+            <div class="member-avatar">👨‍💻</div>
+            <h4>Dev Member 3</h4>
+            <p class="member-role">Backend Engineer</p>
+        </div>
+        <div class="team-member role-dev">
+            <div class="member-avatar">👩‍💻</div>
+            <h4>Dev Member 4</h4>
+            <p class="member-role">Data Analyst</p>
+        </div>
+        <div class="team-member role-dev">
+            <div class="member-avatar">👨‍💻</div>
+            <h4>Dev Member 5</h4>
+            <p class="member-role">UI/UX Designer</p>
+        </div>
+        <div class="team-member role-dev">
+            <div class="member-avatar">👩‍💻</div>
+            <h4>Dev Member 6</h4>
+            <p class="member-role">Testing & QA</p>
+        </div>
+    </div>
+</div>
+<div style="text-align: center;
+    margin-top: 2rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #555;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-top: 1px solid #eee;">
+    Together, we build and innovate 
+    </div>
+
+    <div id="actionModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h3 id="modalTitle">Action</h3>
+            <p id="modalText">Processing your request...</p>
+            <div id="modalActions"></div>
+        </div>
+    </div>
+
+    <input type="file" accept="image/*" id="fileInput" style="display: none;" multiple>
+
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap"></script>
+
+    <script>
+        // Global variables
+        // let capturedImages = JSON.parse(localStorage.getItem('capturedImages')) || [];
+        let analysisResults = JSON.parse(localStorage.getItem('analysisResults')) || [];
+        let map;
+
+        // Initialize map
+        function initMap() {
+    map = new google.maps.Map(document.getElementById('map'), {
+        center: { lat: 18.5204, lng: 73.8567 },
+        zoom: 12,
+        // MODIFIED LINE: 'cooperative' requires Ctrl/Cmd key (the default behavior)
+        // Change to 'greedy' to allow zooming with simple mouse scroll (wheel)
+        gestureHandling: 'greedy' 
+    });
+
+    // Add sample marker
+    new google.maps.Marker({
+        position: { lat: 18.5204, lng: 73.8567 },
+        map: map,
+        title: 'Sample Location (Pune)',
+        icon: {
+            url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+                <svg width="30" height="30" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="15" cy="15" r="12" fill="#667eea" stroke="#fff" stroke-width="2"/>
+                    <text x="15" y="19" font-family="Arial" font-size="16" fill="white" text-anchor="middle">📍</text>
+                </svg>
+            `),
+            scaledSize: new google.maps.Size(30, 30)
+        }
+    });
+
+    // updateStats();
+}
+
+        
+
+        // Select sample image function
+        // function selectSampleImage(sampleId) {
+        //     const sampleData = sampleImageData[sampleId];
+        //     if (!sampleData) return;
+
+        //     // Clear existing analysis
+        //     const analysisGrid = document.getElementById('analysisGrid');
+            
+        //     // Create analysis display
+        //     const analysisItem = document.createElement('div');
+        //     analysisItem.className = 'analysis-item';
+        //     analysisItem.innerHTML = `
+        //         <div class="analysis-image">
+        //             <img src="${document.querySelector(`[onclick="selectSampleImage('${sampleId}')"] img`).src}" alt="${sampleData.name}">
+        //         </div>
+        //         <div class="analysis-data">
+        //             <h4>${sampleData.name}</h4>
+        //             <div class="data-row"><span class="data-label">Location:</span> <span class="data-value">${sampleData.location}</span></div>
+        //             <div class="data-row"><span class="data-label">Grain Size:</span> <span class="data-value">${sampleData.grainSize}</span></div>
+        //             <div class="data-row"><span class="data-label">Type:</span> <span class="data-value">${sampleData.type}</span></div>
+        //             <div class="data-row"><span class="data-label">Avg Grain Size:</span> <span class="data-value">${sampleData.analysis.avgGrainSize}</span></div>
+        //             <div class="data-row"><span class="data-label">Roundness:</span> <span class="data-value">${sampleData.analysis.roundness}</span></div>
+        //             <div class="data-row"><span class="data-label">Sorting:</span> <span class="data-value">${sampleData.analysis.sortingLevel}</span></div>
+        //             <div class="data-row"><span class="data-label">Composition:</span> <span class="data-value">${sampleData.analysis.composition}</span></div>
+        //             <div class="data-row"><span class="data-label">Porosity:</span> <span class="data-value">${sampleData.analysis.porosity}</span></div>
+        //         </div>
+        //     `;
+            
+        //     analysisGrid.innerHTML = '';
+        //     analysisGrid.appendChild(analysisItem);
+
+        //     // Show success message
+        //     showModal('✅ Sample Selected', `${sampleData.name} has been loaded for analysis. Detailed grain analysis data is now displayed.`, [
+        //         { text: 'OK', action: () => closeModal() }
+        //     ]);
+        // }
+
+        // Main functions
+        function captureImage() {
+        // This now shows a simple informational pop-up instead of complex logic
+        showModal(
+            'Feature Disabled', // Title of the pop-up
+            'This capture feature is currently unavailable. Please use the pre-loaded sample data or the "Upload Image" option.', // Your desired text
+            [
+                // Custom button to just close the modal
+                { text: 'OK', action: () => closeModal() } 
+            ]
+        );
+        }
+
+        function uploadImage() {
+        // This now shows a simple informational pop-up instead of opening the file dialog
+        showModal(
+            'Feature Placeholder', // Title of the pop-up
+            'The image upload feature is temporarily disabled. Please use the preset sample images under the "Validation & Analysis" section to view sample data.', // Your desired text
+            [
+                // Custom button to just close the modal
+                { text: 'ok', action: () => closeModal() } 
+            ]
+            );
+        }
+
+        function openGallery() {
+        // This function now only displays a custom pop-up message.
+        showModal(
+            '🎨 Gallery Feature Status', // Title of the pop-up
+            'The full gallery feature is under development. You can see a preview of recently analyzed sample images on the main page, or select a sample under the "Validation & Analysis" section.', // Your desired text
+            [
+            // Custom button to just close the modal
+            { text: 'Close', action: () => closeModal() } 
+         ]
+        );}
+
+        // function simulateCapture() {
+        //     const sampleImage = generateSampleImageSVG('Sand Sample', '#d4c4a8');
+        //     const imageData = {
+        //         id: Date.now(),
+        //         src: sampleImage,
+        //         name: `Sample_${Date.now()}.jpg`,
+        //         timestamp: new Date().toISOString(),
+        //         location: { lat: 18.52 + Math.random() * 0.01, lng: 73.85 + Math.random() * 0.01 }
+        //     };
+            
+        //     capturedImages.push(imageData);
+        //     localStorage.setItem('capturedImages', JSON.stringify(capturedImages));
+            
+        //     closeModal();
+        //     updateGallery();
+        //     updateStats();
+        //     showModal('✅ Image Captured', 'Sand grain sample captured successfully!');
+        // }
+
+        // ** ORIGINAL FUNCTION (NO LONGER USED BY BUTTON) **
+        // function analyzeAllImages() {
+        //     if (capturedImages.length === 0) {
+        //         showModal('ℹ️ No Images', 'No images to analyze. Capture some images first!');
+        //         return;
+        //     }
+        //     showModal('🔬 Analyzing', 'Running AI analysis on all captured images...');
+            
+        //     setTimeout(() => {
+        //         // Generate analysis results for all images
+        //         capturedImages.forEach(image => {
+        //             if (!analysisResults.find(result => result.imageId === image.id)) {
+        //                 const analysis = generateAnalysisResult(image);
+        //                 analysisResults.push(analysis);
+        //             }
+        //         });
+                
+        //         localStorage.setItem('analysisResults', JSON.stringify(analysisResults));
+        //         closeModal();
+        //         updateStats();
+        //         updateAnalysisDisplay();
+        //         showModal('✅ Analysis Complete', 'All images have been analyzed successfully!');
+        //     }, 2000);
+        // }
+
+        // ** NEW FUNCTION: Shows a pop-up with custom text only **
+        function showAnalysisInfo() {
+            showModal(
+                '🔬 Analysis Information', 
+                'The "Analyze All" function is currently disabled in this demo version. Please select a sample image from the scroll bar above to view pre-calculated analysis data. This action does not start a real analysis process.',
+                [
+                    { text: 'Got It!', action: () => closeModal() }
+                ]
+            );
+        }
+        
+        // function generateAnalysisResult(image) {
+        //     const grainSizes = ['Fine (0.1-0.25mm)', 'Medium (0.25-0.5mm)', 'Coarse (0.5-1mm)', 'Very Coarse (1-2mm)'];
+        //     const sortingTypes = ['Well sorted', 'Moderately sorted', 'Poorly sorted'];
+        //     const roundnessTypes = ['Angular', 'Sub-angular', 'Sub-rounded', 'Rounded'];
+            
+        //     return {
+        //         imageId: image.id,
+        //         imageName: image.name,
+        //         imageSrc: image.src,
+        //         location: image.location,
+        //         timestamp: new Date().toISOString(),
+        //         grainSize: grainSizes[Math.floor(Math.random() * grainSizes.length)],
+        //         sorting: sortingTypes[Math.floor(Math.random() * sortingTypes.length)],
+        //         roundness: roundnessTypes[Math.floor(Math.random() * roundnessTypes.length)],
+        //         averageSize: (Math.random() * 2).toFixed(2) + 'mm',
+        //         grainCount: Math.floor(Math.random() * 500) + 100,
+        //         dominantMinerals: ['Quartz', 'Feldspar', 'Mica'][Math.floor(Math.random() * 3)]
+        //     };
+        // }
+
+        function updateAnalysisDisplay() {
+            const analysisGrid = document.getElementById('analysisGrid');
+            
+            if (analysisResults.length === 0) {
+                analysisGrid.innerHTML = `
+                    <div class="analysis-placeholder">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">🔬</div>
+                        <h3>No Analysis Data Yet</h3>
+                        <p>Capture or upload images and run analysis to see detailed results here</p>
+                    </div>
+                `;
+                return;
+            }
+
+            analysisGrid.innerHTML = analysisResults.map(result => `
+                <div class="analysis-item">
+                    <div class="analysis-image">
+                        <img src="${result.imageSrc}" alt="${result.imageName}">
+                    </div>
+                    <div class="analysis-data">
+                        <h4>${result.imageName}</h4>
+                        <div class="data-row">
+                            <span class="data-label">Location:</span>
+                            <span class="data-value">${result.location.lat.toFixed(4)}, ${result.location.lng.toFixed(4)}</span>
+                        </div>
+                        <div class="data-row">
+                            <span class="data-label">Grain Size:</span>
+                            <span class="data-value">${result.grainSize}</span>
+                        </div>
+                        <div class="data-row">
+                            <span class="data-label">Average Size:</span>
+                            <span class="data-value">${result.averageSize}</span>
+                        </div>
+                        <div class="data-row">
+                            <span class="data-label">Sorting:</span>
+                            <span class="data-value">${result.sorting}</span>
+                        </div>
+                        <div class="data-row">
+                            <span class="data-label">Roundness:</span>
+                            <span class="data-value">${result.roundness}</span>
+                        </div>
+                        <div class="data-row">
+                            <span class="data-label">Grain Count:</span>
+                            <span class="data-value">${result.grainCount}</span>
+                        </div>
+                        <div class="data-row">
+                            <span class="data-label">Dominant Mineral:</span>
+                            <span class="data-value">${result.dominantMinerals}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // function clearAllData() {
+        //     if (confirm('Are you sure you want to clear all data? This action cannot be undone.')) {
+        //         capturedImages = [];
+        //         analysisResults = [];
+        //         localStorage.removeItem('capturedImages');
+        //         localStorage.removeItem('analysisResults');
+                
+        //         updateStats();
+        //         updateGallery();
+        //         updateAnalysisDisplay();
+                
+        //         showModal('✅ Data Cleared', 'All data has been cleared successfully.');
+        //     }
+        // }
+
+        // function exportData() {
+        //     showModal('📊 Exporting Data', 'Preparing data export...');
+        //     setTimeout(() => {
+        //         closeModal();
+        //         showModal('✅ Export Complete', 'Data exported successfully!');
+        //     }, 1500);
+        // }
+
+        // function generateSampleImageSVG(text, color) {
+        //     const svg = `
+        //         <svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+        //             <rect width="200" height="200" fill="${color}"/>
+        //             <circle cx="50" cy="50" r="5" fill="#999" opacity="0.7"/>
+        //             <circle cx="120" cy="80" r="3" fill="#777" opacity="0.8"/>
+        //             <circle cx="170" cy="60" r="4" fill="#666" opacity="0.6"/>
+        //             <text x="100" y="110" font-family="Arial" font-size="14" fill="#333" text-anchor="middle">${text}</text>
+        //         </svg>
+        //     `;
+        //     return 'data:image/svg+xml;base64,' + btoa(svg);
+        // }
+
+        // function updateGallery() {
+        //     const gallery = document.getElementById('imageGallery');
+        //     if (capturedImages.length > 0) {
+        //         gallery.innerHTML = capturedImages.slice(0, 6).map(img => `
+        //             <div class="gallery-item">
+        //                 <img src="${img.src}" style="width: 100%; height: 100px; object-fit: cover; border-radius: 5px;">
+        //                 <p style="margin-top: 0.5rem; font-size: 0.9rem;">${img.name}</p>
+        //             </div>
+        //         `).join('');
+        //     }
+        // }
+
+        // function updateStats() {
+            // NOTE: The IDs below (`totalImages`, `analyzedCount`, `avgGrainSize`, `coverageArea`) 
+            // are not present in the HTML, so this function is largely ineffective 
+            // but is kept for script integrity.
+            // if (document.getElementById('totalImages')) {
+            //     document.getElementById('totalImages').textContent = capturedImages.length;
+            //     document.getElementById('analyzedCount').textContent = Math.floor(capturedImages.length * 0.8);
+            //     document.getElementById('avgGrainSize').textContent = (Math.random() * 2).toFixed(2) + 'mm';
+            //     document.getElementById('coverageArea').textContent = (capturedImages.length * 0.05).toFixed(2);
+            // }
+        // }
+
+        // Modal functions
+        function showModal(title, message, actions = []) {
+            const modal = document.getElementById('actionModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalText = document.getElementById('modalText');
+            const modalActions = document.getElementById('modalActions');
+            
+            modalTitle.textContent = title;
+            modalText.textContent = message;
+            
+            modalActions.innerHTML = '';
+            // If custom actions are provided, use them
+            if (actions.length > 0) {
+                actions.forEach(action => {
+                    const button = document.createElement('button');
+                    button.className = 'btn btn-primary';
+                    button.textContent = action.text;
+                    button.onclick = action.action; // Attach the custom function
+                    button.style.margin = '0.5rem';
+                    modalActions.appendChild(button);
+                });
+            } else {
+                // Otherwise, provide a default close button
+                const closeButton = document.createElement('button');
+                closeButton.className = 'btn btn-primary';
+                closeButton.textContent = 'Close';
+                closeButton.onclick = closeModal;
+                closeButton.style.margin = '0.5rem';
+                modalActions.appendChild(closeButton);
+            }
+            
+            modal.style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('actionModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('actionModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // updateStats();
+            // updateGallery();
+            updateAnalysisDisplay();
+        });
+    </script>
+</body>
+</html>
